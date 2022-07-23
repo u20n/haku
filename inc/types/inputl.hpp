@@ -53,17 +53,17 @@ struct inputl {
      
     if (mbuff.size() >= aspace) { // is the msg longer than avalible?
       bump = '}';
-      // TODO
-      // this throws when you write over aspace,
-      // and then go into the middle of the message,
-      // and then start deleting
-      // once you can see the first character, it gets an error,
-      // this is because there's characters behind the cursor, but
-      // we're essentially ignoring them for the fb compose 
-      fb = mbuff.substr(
+      if (cindex >= mbuff.size()-1) { // is cindex @ the end of msg buffer
+        fb = mbuff.substr(
           cindex-(aspace-1), // current pos
           aspace // size avalible
         );
+      } else if (cindex <= aspace-1) { // should mbuff[0] be visable?  
+        fb = mbuff.substr(
+            0,
+            aspace
+          );
+      }
     } else if (mbuff.size() <= aspace) {
       fb = mbuff;
       /** fill out undersized buffer */
