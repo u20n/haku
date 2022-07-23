@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "inc/screen.hpp"
-#include "inc/display/inputl.hpp"
+#include "inc/types/inputl.hpp"
 
 /**
  * push a message to nodes

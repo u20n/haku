@@ -16,15 +16,15 @@ struct inputl {
     /** parse input character */
     switch(c) {
       case KEY_RIGHT:
-        cindex++;
+        if ((cindex+1)-loffset <= mbuff.size()) {cindex++;}
         break;
       case KEY_LEFT:
-        cindex--;
+        if (cindex-1 >= loffset) {cindex--;}
         break;
       case KEY_BACKSPACE:
         if (cindex-(loffset+1) >= mbuff.size()) {return;}
         cindex--;
-        mbuff.erase(cindex-loffset);
+        mbuff.erase(cindex-loffset, 1);
         break;
       case KEY_ENTER:
         /** new block */
@@ -34,7 +34,9 @@ struct inputl {
           mbuff.resize(cindex-(loffset-1));
         }
         mbuff.at(cindex-loffset) = c;
-        cindex++;
+        if (cindex+roffset != getmaxx(stdscr)) { // don't move the cursor if we're at the end
+          cindex++;
+        }
         break;
     }
     
@@ -44,13 +46,14 @@ struct inputl {
     unsigned int toffset = loffset+roffset; // total offset
     std::string fb; // 'final' buffer (e.g. display buffer)
     
-    if (mx-(toffset) <= mbuff.size()+1) {
+    
+    if (mx-(toffset) <= mbuff.size()) { // is the space available <= the size of the string
       bump = '}';
       fb = mbuff.substr(
-          mx-(toffset)-1,
-          cindex-(toffset)-1
+          cindex-loffset-1, // current pos, -1 b/c of base 0
+          mx-toffset // size avalible
         );
-      cindex = fb.size()+loffset-1;
+      cindex = mx-roffset-1; // TODO seems like the issue is visible here
     } else if (mbuff.size() != (mx-(toffset))) {
       fb = mbuff;
       /** fill out undersized buffer */
