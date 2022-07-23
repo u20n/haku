@@ -48,29 +48,30 @@ struct inputl {
     /** fill in bar */
     char bump = ' ';
     unsigned int toffset = loffset+roffset; // total offset
+    unsigned int aspace = mx-toffset; // avaliable space
     std::string fb; // 'final' buffer (e.g. display buffer)
     
-    if (mbuff.size() >= mx-toffset) { // is the space available <= the size of the string
-      bump = '}';
+    if (mbuff.size() >= aspace) { // is the space available <= the size of the string
+      bump = '}'; 
       fb = mbuff.substr(
-          cindex, // current pos
-          mx-toffset // size avalible
+          cindex-aspace, // current pos
+          aspace // size avalible
         );
-    } else if (mbuff.size() <= mx-toffset) {
+    } else if (mbuff.size() <= aspace) {
       fb = mbuff;
       /** fill out undersized buffer */
-      while(fb.size() < mx-toffset) {
+      while(fb.size() < aspace) {
         fb.append(" ");
       }
     }
     
     /** print bar */
     unsigned int acindex = cindex; // actual cursor index
-    if (cindex >= mx-toffset) {
-      acindex = mx-toffset;
-    } else {
-      acindex += loffset; // add offset
+    if (cindex >= aspace-1) {
+      acindex = aspace-1;
     }
+    acindex += loffset; // add offset
+    
     printl(
       getmaxy(stdscr)-1,
       "| ", mode[0], mode[1], " ", fb, bump, " |"
