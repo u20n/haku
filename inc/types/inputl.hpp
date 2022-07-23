@@ -50,11 +50,18 @@ struct inputl {
     unsigned int toffset = loffset+roffset; // total offset
     unsigned int aspace = mx-toffset; // avaliable space
     std::string fb; // 'final' buffer (e.g. display buffer)
-    
-    if (mbuff.size() >= aspace) { // is the space available <= the size of the string
-      bump = '}'; 
+     
+    if (mbuff.size() >= aspace) { // is the msg longer than avalible?
+      bump = '}';
+      // TODO
+      // this throws when you write over aspace,
+      // and then go into the middle of the message,
+      // and then start deleting
+      // once you can see the first character, it gets an error,
+      // this is because there's characters behind the cursor, but
+      // we're essentially ignoring them for the fb compose 
       fb = mbuff.substr(
-          cindex-aspace, // current pos
+          cindex-(aspace-1), // current pos
           aspace // size avalible
         );
     } else if (mbuff.size() <= aspace) {
