@@ -4,6 +4,8 @@
 
 #include "inc/screen.hpp"
 #include "inc/types/inputl.hpp"
+#include "inc/types/splash.hpp"
+
 
 int main(void) {
   inputl mbar;
@@ -14,7 +16,8 @@ int main(void) {
   keypad(stdscr, TRUE); // enable function keys
 	noecho(); // don't echo while getch
   
-
+  splash spl("./assets/bunny_splash");
+  spl.show();
   while (!close) {
     refresh();
     /** handle input */

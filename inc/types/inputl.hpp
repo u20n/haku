@@ -30,6 +30,14 @@ struct inputl {
         cindex--;
         mbuff.erase(cindex, 1);
         break;
+      case KEY_DC:
+        if (cindex == mbuff.size()-1) {
+          mbuff.erase(cindex, 1);
+          cindex--;
+        } else {
+          mbuff.erase(cindex+1, 1);
+        }
+        break;
       case KEY_ENTER:
         /** new block */
         break;
