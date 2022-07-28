@@ -38,8 +38,11 @@ struct inputl {
           mbuff.erase(cindex+1, 1);
         }
         break;
+      case 10: // to catch keyboard enter
       case KEY_ENTER:
-        /** new block */
+        /** TODO push to new block */
+        cindex = 0;
+        mbuff.clear();
         break;
       default:
         if (cindex >= mbuff.size()) {
