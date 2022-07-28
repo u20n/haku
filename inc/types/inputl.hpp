@@ -1,18 +1,19 @@
 #pragma once
 #include "../screen.hpp"
+#include "../push.hpp"
 #include <string>
 #include <charconv>
 #include <ncurses.h>
 
-
 /** responsible for managing the input line */
 struct inputl {
+  agent* uagent;
   std::string mbuff;
   unsigned int loffset = 5; // left offset
   unsigned int roffset = 3; // right offset
   unsigned int cindex = 0; // cursor index (on message)
   
-  void push(
+  void bump(
     int c, // inputed character
     char mode[2] // mode signifier to print
   ) {   
@@ -40,7 +41,12 @@ struct inputl {
         break;
       case 10: // to catch keyboard enter
       case KEY_ENTER:
-        /** TODO push to new block */
+        /** TODO push to new block
+         *  how do we know what channel/container the user is in?
+         *  how much authority should inputl have? (minimal)
+         *
+         * */
+        uagent->send(mbuff);
         cindex = 0;
         mbuff.clear();
         break;
@@ -96,4 +102,6 @@ struct inputl {
     );
     move(getmaxy(stdscr)-1, acindex);
   }
+
+  inputl(agent* ua) : uagent(ua) {}
 };

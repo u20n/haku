@@ -3,12 +3,14 @@
 #include <vector>
 
 #include "inc/screen.hpp"
+#include "inc/agent.hpp"
 #include "inc/types/inputl.hpp"
 #include "inc/types/splash.hpp"
 
 
 int main(void) {
-  inputl mbar;
+  agent a;
+  inputl mbar(&a);
   bool close = false; // close flag
   
   char mode[2] = {'~', '>'};
@@ -22,7 +24,7 @@ int main(void) {
     refresh();
     /** handle input */
     int c = getch();
-    mbar.push(c, mode);
+    mbar.bump(c, mode);
     refresh();
   }
   /** clean up */
