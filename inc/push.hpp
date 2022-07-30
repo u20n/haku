@@ -2,14 +2,21 @@
 #include <string>
 #include <vector>
 #include <filesystem>
+#include <functional>
+#include "types/base.hpp"
 
 /**
- * we don't need a 'creator' trip,
- * this hasn't been propagated yet
+ * this provides filesystem information 
+ * needed to generate a COBS block
+ * we leave the creation of this block to an
+ * agent implementation to avoid
+ * unneeded complexity here
  * */
 void push(
-    std::string msg, 
-    std::string strip,
+    std::function<
+      std::array<std::string, 2>
+      (std::vector<std::string>)
+    > bgen, 
     std::string bdir
   ) {
   /** 
@@ -29,10 +36,27 @@ void push(
           top.insert(top.begin()+i, block);
         }
       }
-      // prune
-      
-    }  
+    }
+    // prune
+    // v see above comment
+    unsigned int COUNT = 3;
+    if (top.size() > COUNT) {
+      top.erase(top.end()-COUNT, top.begin());
+    }
+
+    /** fill out parents */
+    std::vector<std::string> parents;
+    for (const auto& entry: top) {
+      parents.push_back(entry.path().stem());
+    }
+    
+    // TODO: write to new block
+    auto cont = bgen(parents);
+    std::ofstream nblock(bdir+cont[0]+".block");
+    nblock << cont[1].c_str();
+    nblock.close();
   } catch (std::exception& e) {
     // TODO: log
+    base::log("./logfile.log", e.what());
   }
  }

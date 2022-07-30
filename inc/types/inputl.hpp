@@ -41,11 +41,7 @@ struct inputl {
         break;
       case 10: // to catch keyboard enter
       case KEY_ENTER:
-        /** TODO push to new block
-         *  how do we know what channel/container the user is in?
-         *  how much authority should inputl have? (minimal)
-         *
-         * */
+        // push new block
         uagent->send(mbuff);
         cindex = 0;
         mbuff.clear();
