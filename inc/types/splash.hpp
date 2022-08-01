@@ -5,7 +5,7 @@
 #include <ctime>
 
 
-#include "base.hpp"
+#include "../base.hpp"
 
 struct splash {
   std::vector<std::vector<std::string>> frames;

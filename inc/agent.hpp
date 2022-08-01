@@ -1,17 +1,13 @@
 #pragma once
-
+#include "base.hpp"
 
 /** 
- * does all of the message/server abstraction work for the user
- * unecrypting known messages,
- * signing messages,
- * etc
+ * does all of the server abstraction work for the user 
  * */
 struct agent {
-
-
-  void send(std::string m) { // essentiall extent push
-
-  }
+  /** this is really *attempt* to parse */
+  virtual void parse(std::string m) = 0;
+  /** essentially extended push */
+  virtual void send(std::string m) = 0;
 };
 
