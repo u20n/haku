@@ -1,6 +1,8 @@
 
-LNK = -lncurses -L./lib/
+# v this is the same as build/inc
+INC = -I./lib/core/inc
+LNK = -lncurses -L./lib/core/build/exe -lcore
 G = g++ -std=c++20 -Wall
 
 unix: $(_HEADERS)
-	$(G) main.cpp -o hku.out $(LNK)
+	$(G) $(INC) main.cpp -o hku.out $(LNK)

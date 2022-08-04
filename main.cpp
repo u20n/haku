@@ -3,15 +3,13 @@
 #include <vector>
 
 #include "inc/screen.hpp"
-#include "inc/keys.hpp"
 #include "inc/agent.hpp"
 #include "inc/types/inputl.hpp"
 #include "inc/types/splash.hpp"
 
 struct Client : public agent {
-  keys k;
   void parse(std::string m) override {
-
+  
   }
 
   void send(std::string m) override {
