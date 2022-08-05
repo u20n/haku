@@ -2,7 +2,6 @@
 #include "../screen.hpp"
 #include "../push.hpp"
 
-#include <map>
 #include <string>
 #include <charconv>
 #include <ncurses.h>
@@ -21,6 +20,8 @@ struct inputl {
   unsigned int roffset = 3; // right offset
   unsigned int cindex = 0; // cursor index (on message)
   
+  unsigned int actual = 0; // actual cursor pos
+
   int MARGIN = 20;
   
   enum modekey {
@@ -57,7 +58,7 @@ struct inputl {
       case 10: // to catch keyboard enter
       case KEY_ENTER:
         // push new block
-        uagent->send(mbuff);
+        uagent->send(std::string{mbuff});
         cindex = 0;
         mbuff.clear();
         break;
@@ -100,13 +101,14 @@ struct inputl {
       }
     }
     
-    /** print bar */
-    unsigned int acindex = cindex; // actual cursor index
+    /** update cursor info */
+    actual = cindex;
     if (cindex >= aspace-1) {
-      acindex = aspace-1;
+      actual = aspace-1;
     }
-    acindex += loffset+MARGIN; // add offset
-    
+    actual += loffset+MARGIN; // add offset
+     
+    /** print bar */ 
     printl(
       getmaxy(stdscr)-1,
       margin(
@@ -114,7 +116,7 @@ struct inputl {
         "| ", modes[mode][0], modes[mode][1], " ", fb, bump, " |"
       )
     );
-    move(getmaxy(stdscr)-1, acindex);
+    move(getmaxy(stdscr)-1, actual);
   }
 
   inputl(agent* ua) : uagent(ua) {}

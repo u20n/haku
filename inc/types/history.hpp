@@ -1,24 +1,25 @@
 #pragma once
 
 #include <ranges>
-#include <string_view>
+#include <string>
 #include <ncurses.h>
 
 #include "../screen.hpp"
 
 struct history {
-
   unsigned int MARGIN = 20;
-  unsigned int YLVL = getmaxy(stdscr)-2;
-  
-  void sety(unsigned int y) {YLVL = y;}
+  unsigned int YMOD = 0; // y modifier, e.g. scroll distance
+   
+  void sety(unsigned int y) {YMOD = y;}
   void setm(unsigned int m) {MARGIN = m;}
+
+  std::vector<std::string> layers;
 
   void add_new(std::string m) {
     unsigned int mx = getmaxx(stdscr);
     unsigned int aspace = mx-(MARGIN*2);
 
-    std::vector<std::string> words, layers;
+    std::vector<std::string> words;
     if (m.size() > aspace) {
       // split (shamelessly stolen from SO)
       size_t last, next = 0; 
@@ -41,10 +42,10 @@ struct history {
           words.insert(words.begin()+(i+1), half2); 
           continue; // try again
         }
-        if (layers.at(lindex).size() + words.at(i).size() > aspace) {
+        if (this->layers.at(lindex).size() + words.at(i).size() > aspace) {
           lindex++; // next layer
         } else {
-          layers.at(lindex)+=words.at(i);
+          this->layers.at(lindex)+=words.at(i);
           i++;
         }
       }
@@ -53,15 +54,17 @@ struct history {
       while(m.size() < aspace) {
         m.append(" ");
       }
-      layers.push_back(m);
+      this->layers.push_back(m);
     }
-
-    for (const auto& layer: layers) {
+  }
+  void bump() {
+    // TODO; determine visible layers
+    // INPROGRESS; see YMOD
+    for (unsigned int i=0; i<this->layers.size(); i++) {
       printl(
-        YLVL, 
-        margin(MARGIN, layer)
-      );
-      YLVL--;
+        i, 
+        margin(MARGIN, layers.at(i))
+      ); 
     }
   }
 };

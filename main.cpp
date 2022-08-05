@@ -9,18 +9,21 @@
 #include "inc/types/splash.hpp"
 
 struct Client : public agent {
-  history h;
+  history* h;
   void parse(std::string m) override {
  
   }
 
   void send(std::string m) override {
-    h.add_new(m);
+    h->add_new(m);
   }
+  Client(history* h) : h(h) {}
 };
 
 int main(void) {
-  inputl mbar(new Client);
+  history h;
+  inputl mbar(new Client{&h});
+
   bool close = false; // close flag
    
   initscr();
@@ -29,12 +32,16 @@ int main(void) {
   
   splash spl("./assets/bunny_splash");
   spl.show();
+  refresh();
   while (!close) {
-    refresh();
+    h.bump();
+    /** reset cursor */
+    move(getmaxy(stdscr)-1, mbar.actual);
+
     /** handle input */
     int c = getch();
     mbar.bump(c);
-    refresh();
+    
   }
   /** clean up */
   endwin();

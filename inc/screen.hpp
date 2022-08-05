@@ -19,6 +19,7 @@ void printl(
   assert((unsigned int) getmaxx(stdscr) == sd.str().length());
   /** print line */
   mvprintw(yl, 0, sd.str().c_str());
+  refresh();
 }
 
 
