@@ -1,9 +1,17 @@
 #pragma once
 #include "../screen.hpp"
 #include "../push.hpp"
+
+#include <map>
 #include <string>
 #include <charconv>
 #include <ncurses.h>
+
+char modes[3][2] = {
+  {'~', '>'}, // insert
+  {'>', '|'}, // edit
+  {'|', '<'} // change view
+};
 
 /** responsible for managing the input line */
 struct inputl {
@@ -15,10 +23,15 @@ struct inputl {
   
   int MARGIN = 20;
   
-  void bump(
-    int c, // inputed character
-    char mode[2] // mode signifier to print
-  ) {   
+  enum modekey {
+    INSERT,
+    EDIT,
+    VIEW
+  };
+
+  int mode = 0;
+
+  void bump(int c) { // inputed character
     /** parse input character */
     switch(c) {
       case KEY_RIGHT:
@@ -72,7 +85,7 @@ struct inputl {
         fb = mbuff.substr(
             0,
             aspace
-          );
+        );
       } else { // cindex is in the middle, or the end of mbuff
         fb = mbuff.substr(
           (cindex-1) - (aspace-1), // first index
@@ -98,7 +111,7 @@ struct inputl {
       getmaxy(stdscr)-1,
       margin(
         MARGIN,
-        "| ", mode[0], mode[1], " ", fb, bump, " |"
+        "| ", modes[mode][0], modes[mode][1], " ", fb, bump, " |"
       )
     );
     move(getmaxy(stdscr)-1, acindex);

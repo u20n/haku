@@ -5,23 +5,24 @@
 #include "inc/screen.hpp"
 #include "inc/agent.hpp"
 #include "inc/types/inputl.hpp"
+#include "inc/types/history.hpp"
 #include "inc/types/splash.hpp"
 
 struct Client : public agent {
+  history h;
   void parse(std::string m) override {
-  
+ 
   }
 
   void send(std::string m) override {
-  
+    h.add_new(m);
   }
 };
 
 int main(void) {
   inputl mbar(new Client);
   bool close = false; // close flag
-  
-  char mode[2] = {'~', '>'};
+   
   initscr();
   keypad(stdscr, TRUE); // enable function keys
 	noecho(); // don't echo while getch
@@ -32,7 +33,7 @@ int main(void) {
     refresh();
     /** handle input */
     int c = getch();
-    mbar.bump(c, mode);
+    mbar.bump(c);
     refresh();
   }
   /** clean up */
