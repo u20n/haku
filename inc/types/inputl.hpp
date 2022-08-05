@@ -13,6 +13,8 @@ struct inputl {
   unsigned int roffset = 3; // right offset
   unsigned int cindex = 0; // cursor index (on message)
   
+  int MARGIN = 20;
+  
   void bump(
     int c, // inputed character
     char mode[2] // mode signifier to print
@@ -20,7 +22,7 @@ struct inputl {
     /** parse input character */
     switch(c) {
       case KEY_RIGHT:
-        if (cindex == (mbuff.size()-1)) {return;}
+        if (cindex == mbuff.size()) {return;}
         cindex++;
         break;
       case KEY_LEFT:
@@ -60,24 +62,24 @@ struct inputl {
     unsigned int mx = getmaxx(stdscr);
     /** fill in bar */
     char bump = ' ';
-    unsigned int toffset = loffset+roffset; // total offset
+    unsigned int toffset = loffset+roffset+(MARGIN*2); // total offset
     unsigned int aspace = mx-toffset; // avaliable space
     std::string fb; // 'final' buffer (e.g. display buffer)
-     
+    
     if (mbuff.size() >= aspace) { // is the msg longer than avalible?
       bump = '}';
-      if (cindex >= mbuff.size()-1) { // is cindex @ the end of msg buffer
-        fb = mbuff.substr(
-          cindex-(aspace-1), // current pos
-          aspace // size avalible
-        );
-      } else if (cindex <= aspace-1) { // should mbuff[0] be visable?  
+      if (cindex <= aspace-1) { // should mbuff[0] be visable?  
         fb = mbuff.substr(
             0,
             aspace
           );
+      } else { // cindex is in the middle, or the end of mbuff
+        fb = mbuff.substr(
+          (cindex-1) - (aspace-1), // first index
+          aspace // size avaliable
+        );
       }
-    } else if (mbuff.size() <= aspace) {
+    } else {
       fb = mbuff;
       /** fill out undersized buffer */
       while(fb.size() < aspace) {
@@ -90,11 +92,14 @@ struct inputl {
     if (cindex >= aspace-1) {
       acindex = aspace-1;
     }
-    acindex += loffset; // add offset
+    acindex += loffset+MARGIN; // add offset
     
     printl(
       getmaxy(stdscr)-1,
-      "| ", mode[0], mode[1], " ", fb, bump, " |"
+      margin(
+        MARGIN,
+        "| ", mode[0], mode[1], " ", fb, bump, " |"
+      )
     );
     move(getmaxy(stdscr)-1, acindex);
   }
