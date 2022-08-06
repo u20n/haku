@@ -33,7 +33,8 @@ struct history {
         }
       }
 
-      unsigned int i, lindex = 0; // layer index
+      unsigned int i = 0;
+      unsigned int lindex = this->layers.size(); // layer index
       while (i < words.size()) {
         if (words.at(i).size() > aspace) { // the word is too big, hypenate
           
@@ -50,16 +51,17 @@ struct history {
           continue; // try again 
         }
         
-        if (layers.size() < lindex+1) { // new layer?
-          layers.resize(lindex+1);
+        if (this->layers.size() < lindex+1) { // new layer?
+          this->layers.resize(lindex+1);
         }
 
-        if ((layers.at(lindex).size() + words.at(i).size()) > aspace) {
+        if ((this->layers.at(lindex).size() + words.at(i).size()) > aspace) {
           lindex++; // next layer
-        } else {
-          layers.at(lindex).append(words.at(i));
-          i++;
-        }
+          continue; // try again
+        } 
+        
+        this->layers.at(lindex).append(words.at(i));
+        i++;
       }
       // pad when necessary
       for (unsigned int i=0; i<this->layers.size(); i++) {
