@@ -57,6 +57,7 @@ struct inputl {
         break;
       case 10: // to catch keyboard enter
       case KEY_ENTER:
+        if (mbuff.empty()) {return;}
         // push new block
         uagent->send(std::string{mbuff});
         cindex = 0;
