@@ -55,12 +55,12 @@ struct history {
           this->layers.resize(lindex+1);
         }
 
-        if ((this->layers.at(lindex).size() + words.at(i).size()) > aspace) {
+        if ((this->layers.at(lindex).size() + words.at(i).size() + 1) > aspace) {
           lindex++; // next layer
           continue; // try again
         } 
         
-        this->layers.at(lindex).append(words.at(i));
+        this->layers.at(lindex).append(words.at(i)+=" ");
         i++;
       }
       // pad when necessary

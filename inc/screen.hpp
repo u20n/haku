@@ -22,6 +22,11 @@ void printl(
   refresh();
 }
 
+/** 
+ * print, with color!
+ */
+
+
 
 /** 
  * apply a margin programatically to a buffer
