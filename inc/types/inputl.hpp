@@ -22,7 +22,7 @@ struct inputl {
   
   unsigned int actual = 0; // actual cursor pos
 
-  int MARGIN = 20;
+  int MARGIN = 30;
   
   enum modekey {
     INSERT,

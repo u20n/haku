@@ -7,7 +7,7 @@
 #include "../screen.hpp"
 
 struct history {
-  unsigned int MARGIN = 50;
+  unsigned int MARGIN = 30;
   unsigned int YMOD = 0; // y modifier, e.g. scroll distance
    
   void sety(unsigned int y) {YMOD = y;}
@@ -45,8 +45,8 @@ struct history {
           
           words.at(i) = big.substr(0, aspace); // first part of the split
           words.insert(
-            words.begin() + (i+1),
-            big.substr(aspace, big.size())
+            words.begin() + (i+1), 
+            big.substr(aspace-1, big.size()) // so we get '-' on the other side too
           ); // rest
           continue; // try again 
         }
@@ -80,9 +80,9 @@ struct history {
   void bump() {
     // TODO; determine visible layers
     // INPROGRESS; see YMOD
-    for (unsigned int i=0; i<this->layers.size(); i++) {
+    for (unsigned int i=YMOD; i<this->layers.size(); i++) {
       printl(
-        i, 
+        i-YMOD,
         margin(MARGIN, layers.at(i))
       ); 
     }
