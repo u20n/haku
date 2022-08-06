@@ -79,8 +79,20 @@ struct history {
   }
   void bump() {
     // TODO; determine visible layers
-    // INPROGRESS; see YMOD
-    for (unsigned int i=YMOD; i<this->layers.size(); i++) {
+    // IN-PROGRESS; see YMOD
+    
+    // max y or layer count, whichever is smaller 
+    unsigned int my = (getmaxy(stdscr)-1 >= layers.size()) ? layers.size() : getmaxy(stdscr)-1;
+    
+    /**
+     * this will 'yank' attention back, regardless of another setting
+     * this is ok for now, when haku is being tested
+     * but this should be changed in production
+     * control should be at main.cpp level
+     * */
+    YMOD = layers.size()-my;
+                             
+    for (unsigned int i=YMOD; i<my; i++) {
       printl(
         i-YMOD,
         margin(MARGIN, layers.at(i))
