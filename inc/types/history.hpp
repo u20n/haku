@@ -85,7 +85,8 @@ struct history {
     unsigned int my = (getmaxy(stdscr)-1 >= layers.size()) ? layers.size() : getmaxy(stdscr)-1;
     
     /**
-     * this will 'yank' attention back, regardless of another setting
+     * this will 'yank' attention back to the most recent message, 
+     * regardless of another setting
      * this is ok for now, when haku is being tested
      * but this should be changed in production
      * control should be at main.cpp level

@@ -108,8 +108,7 @@ struct inputl {
         if (mbuff.empty()) {return;}
         // push new block
         uagent->send(std::string{mbuff});
-        cindex = 0;
-        mbuff.clear();
+        cindex = 0; mbuff.clear(); // reset 
         break;
       default:
         if (cindex >= mbuff.size()) {

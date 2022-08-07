@@ -42,9 +42,8 @@ int main(void) {
   spl.show();
   refresh();
   getch(); // "press any key to start"
-  clear();
+  clear(); refresh();
   while (!close) {
-    refresh();
     h.bump();
     /** reset cursor */
     move(getmaxy(stdscr)-1, mbar.actual);
@@ -53,6 +52,7 @@ int main(void) {
     mbar.show();
     int c = getch(); // slightly redundant, but we may need it later on
     mbar.bump(c);
+    refresh();
   }
 
   /** clean up */
