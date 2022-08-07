@@ -3,29 +3,45 @@
 #include <fstream>
 #include <chrono>
 #include <ctime>
-
+#include <atomic>
+#include <cmath>
 
 #include "../base.hpp"
+#include "../screen.hpp"
 
 struct splash {
-  std::vector<std::vector<std::string>> frames;
+  std::vector<std::string> img;
+  std::atomic<bool>* ready;
   
-  void show(int time = -1) { // >0 -> until animation finishes
-    
-  }
-  void show(bool* ready) {
+  void show(int y=-1, int x=-1) { // defaults to center if y,x < 0
+    unsigned int my, mx;
+    getmaxyx(stdscr, my, mx);
 
+    /**
+     * generate approriate center (assuming equal length strings)
+     * the process is almost identical between x and y
+     * */
+    if (y < 0 || x < 0) {
+      unsigned int ix = img.at(0).size(); 
+      x = floor((mx-ix)/2);
+      unsigned int iy = img.size();
+      y = floor((my-iy)/2);
+    }
+    // print splash
+    for (unsigned int i=0; i<my; i++) {
+      if (i < y || (i-y) > y) { // y offsets
+        printl(i, newl());
+      } else {
+        printl(i, lmargin(x, img.at(i-y)));
+      } 
+    }
+
+    // block until ready
+    ready->wait(false);
   }
   
-  splash(std::string path){
-    /** load animation from folder */
-    try {
-      //fopen(path
-    } catch (std::exception& e) {
-      time_t t = std::time(0);
-    base::log(
-          "./splash.log",
-          std::ctime(&t), e.what());
-    }
-  }
+  splash(
+      std::vector<std::string> img,
+      std::atomic<bool>* ready
+    ) : img(img), ready(ready) {}
 };

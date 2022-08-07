@@ -8,6 +8,10 @@
 #include "inc/types/history.hpp"
 #include "inc/types/splash.hpp"
 
+std::vector<std::string> mysplash {
+  "  >.<"
+};
+
 struct Client : public agent {
   history* h;
   void parse(std::string m) override {
@@ -30,7 +34,9 @@ int main(void) {
   keypad(stdscr, TRUE); // enable function keys
 	noecho(); // don't echo while getch
   
-  splash spl("./assets/bunny_splash");
+  std::atomic<bool> ready{true}; 
+  splash spl(mysplash, &ready);
+  ready.notify_all();
   spl.show();
   refresh();
   while (!close) {

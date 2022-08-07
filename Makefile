@@ -6,3 +6,7 @@ G = g++ -std=c++20 -Wall
 
 unix: $(_HEADERS)
 	$(G) $(INC) main.cpp -o haku.out $(LNK)
+
+.clean:
+clean:
+	rm -f haku.out

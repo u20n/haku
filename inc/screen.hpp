@@ -27,7 +27,6 @@ void printl(
  */
 
 
-
 /** 
  * apply a margin programatically to a buffer
  * */
@@ -50,4 +49,35 @@ std::string margin(unsigned int margin, T... t) {
 
   assert(mx == s.str().length());
   return s.str();
+}
+
+/**
+ * left margin, fill right
+ * */
+template<typename... T>
+std::string lmargin(unsigned int margin, T... t) {
+  unsigned int mx = getmaxx(stdscr);
+  std::stringstream s;
+  for (unsigned int i=0; i<margin; i++) {
+    s << ' ';
+  }
+  ((s << t), ...);
+  // fill in other side
+  while (mx > s.str().size()) {
+    s << ' ';
+  }
+  // no need to check s.str().size() == mx
+  return s.str();
+}
+
+/**
+ * print a blank line
+ * */
+std::string newl() {
+  unsigned int mx = getmaxx(stdscr);
+  std::string r;
+  for (unsigned int i=0; i<mx; i++) {
+    r.append(" ");
+  };
+  return r;
 }
