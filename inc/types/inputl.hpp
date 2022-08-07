@@ -32,49 +32,7 @@ struct inputl {
 
   int mode = 0;
   
-  // TODO: we need a designated wake character to refocus the inputl
-  void bump(int c) { // inputed character
-    /** parse input character */
-    switch(c) {
-      case KEY_RIGHT:
-        if (cindex == mbuff.size()) {return;}
-        cindex++;
-        break;
-      case KEY_LEFT:
-        if (cindex-1 >= 0) {cindex--;}
-        break;
-      case KEY_BACKSPACE:
-        if (cindex == 0) {return;}
-        cindex--;
-        mbuff.erase(cindex, 1);
-        break;
-      case KEY_DC:
-        if (cindex == mbuff.size()-1) {
-          mbuff.erase(cindex, 1);
-          cindex--;
-        } else {
-          mbuff.erase(cindex+1, 1);
-        }
-        break;
-      case 10: // to catch keyboard enter
-      case KEY_ENTER:
-        if (mbuff.empty()) {return;}
-        // push new block
-        uagent->send(std::string{mbuff});
-        cindex = 0;
-        mbuff.clear();
-        break;
-      default:
-        if (cindex >= mbuff.size()) {
-          mbuff.resize(cindex+1);
-        }
-        // TODO
-        // if the editing mode is (intended) insert, this overwrites
-        mbuff.at(cindex) = c;
-        cindex++;
-        break;
-    }
-    
+  void show() { 
     unsigned int mx = getmaxx(stdscr);
     /** fill in bar */
     char bump = ' ';
@@ -121,5 +79,49 @@ struct inputl {
     move(getmaxy(stdscr)-1, actual);
   }
 
+  // TODO: we need a designated wake character to refocus the inputl
+  void bump(int c) { // inputed character
+    /** parse input character */
+    switch(c) {
+      case KEY_RIGHT:
+        if (cindex == mbuff.size()) {return;}
+        cindex++;
+        break;
+      case KEY_LEFT:
+        if (cindex-1 >= 0) {cindex--;}
+        break;
+      case KEY_BACKSPACE:
+        if (cindex == 0) {return;}
+        cindex--;
+        mbuff.erase(cindex, 1);
+        break;
+      case KEY_DC:
+        if (cindex == mbuff.size()-1) {
+          mbuff.erase(cindex, 1);
+          cindex--;
+        } else {
+          mbuff.erase(cindex+1, 1);
+        }
+        break;
+      case 10: // to catch keyboard enter
+      case KEY_ENTER:
+        if (mbuff.empty()) {return;}
+        // push new block
+        uagent->send(std::string{mbuff});
+        cindex = 0;
+        mbuff.clear();
+        break;
+      default:
+        if (cindex >= mbuff.size()) {
+          mbuff.resize(cindex+1);
+        }
+        // TODO
+        // if the editing mode is (intended) insert, this overwrites
+        mbuff.at(cindex) = c;
+        cindex++;
+        break;
+    }
+  }
+  
   inputl(agent* ua) : uagent(ua) {}
 };

@@ -44,14 +44,17 @@ int main(void) {
   getch(); // "press any key to start"
   clear();
   while (!close) {
+    refresh();
     h.bump();
     /** reset cursor */
     move(getmaxy(stdscr)-1, mbar.actual);
 
     /** handle input */
+    mbar.show();
     int c = getch();
     mbar.bump(c);
   }
+
   /** clean up */
   endwin();
 
