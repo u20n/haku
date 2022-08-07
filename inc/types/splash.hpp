@@ -11,8 +11,12 @@
 
 struct splash {
   std::vector<std::string> img;
-  std::atomic<bool>* ready;
-  
+  /** 
+   * while sound in principle, this is pretty annoying to use in practice; 
+   * TODO: come up with a better solution
+   * */
+  std::atomic<bool>* ready;  
+
   void show(int y=-1, int x=-1) { // defaults to center if y,x < 0
     unsigned int my, mx;
     getmaxyx(stdscr, my, mx);
@@ -29,15 +33,16 @@ struct splash {
     }
     // print splash
     for (unsigned int i=0; i<my; i++) {
-      if (i < y || (i-y) > y) { // y offsets
+      if (i < y || i+1 > (img.size()+y)) { // y offsets
         printl(i, newl());
       } else {
         printl(i, lmargin(x, img.at(i-y)));
       } 
     }
-
+    refresh(); // show splash
     // block until ready
     ready->wait(false);
+    // clear(); // see :15
   }
   
   splash(

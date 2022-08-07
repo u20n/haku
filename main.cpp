@@ -9,7 +9,9 @@
 #include "inc/types/splash.hpp"
 
 std::vector<std::string> mysplash {
-  "  >.<"
+  "       (*  >.<)",
+  "        .haku!",
+  " > press any key to start "
 };
 
 struct Client : public agent {
@@ -38,7 +40,7 @@ int main(void) {
   splash spl(mysplash, &ready);
   ready.notify_all();
   spl.show();
-  refresh();
+  getch(); // "press any key to start"
   while (!close) {
     h.bump();
     /** reset cursor */
@@ -47,7 +49,6 @@ int main(void) {
     /** handle input */
     int c = getch();
     mbar.bump(c);
-    
   }
   /** clean up */
   endwin();
