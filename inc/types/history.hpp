@@ -15,7 +15,7 @@ struct history {
 
   std::vector<std::string> layers;
 
-  void add_new(std::string m) {
+  void bump(std::string m) {
     unsigned int mx = getmaxx(stdscr);
     unsigned int aspace = mx-(MARGIN*2);
 
@@ -36,8 +36,7 @@ struct history {
       unsigned int i = 0;
       unsigned int lindex = this->layers.size(); // layer index
       while (i < words.size()) {
-        if (words.at(i).size() > aspace) { // the word is too big, hypenate
-          
+        if (words.at(i).size() > aspace) { // the word is too big, hypenate 
           std::string big = words.at(i);
 
           // inject hypen
@@ -45,7 +44,7 @@ struct history {
           
           words.at(i) = big.substr(0, aspace); // first part of the split
           words.insert(
-            words.begin() + (i+1), 
+            words.begin() + (i+1), // behind i 
             big.substr(aspace-1, big.size()) // so we get '-' on the other side too
           ); // rest
           continue; // try again 
@@ -77,12 +76,14 @@ struct history {
       this->layers.push_back(m);
     }
   }
-  void bump() {
+
+  void show() {
     // TODO; determine visible layers
     // IN-PROGRESS; see YMOD
     
-    // max y or layer count, whichever is smaller 
-    unsigned int my = (getmaxy(stdscr)-1 >= layers.size()) ? layers.size() : getmaxy(stdscr)-1;
+    // max y or layer count, whichever is smaller
+    unsigned int my = getmaxy(stdscr);
+    unsigned int off = (my-1 >= layers.size()) ? layers.size() : my-1;
     
     /**
      * this will 'yank' attention back to the most recent message, 
@@ -91,9 +92,9 @@ struct history {
      * but this should be changed in production
      * control should be at main.cpp level
      * */
-    YMOD = layers.size()-my;
+    YMOD = layers.size()-off;
                              
-    for (unsigned int i=YMOD; i<my; i++) {
+    for (unsigned int i=YMOD; i<off; i++) {
       printl(
         i-YMOD,
         margin(MARGIN, layers.at(i))

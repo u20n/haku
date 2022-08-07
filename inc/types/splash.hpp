@@ -33,7 +33,7 @@ struct splash {
     }
     // print splash
     for (unsigned int i=0; i<my; i++) {
-      if (i < y || i+1 > (img.size()+y)) { // y offsets
+      if (i < (unsigned int) y || i+1 > (img.size()+y)) { // y offsets
         printl(i, newl());
       } else {
         printl(i, lmargin(x, img.at(i-y)));

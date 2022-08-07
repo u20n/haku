@@ -76,7 +76,6 @@ struct inputl {
         "| ", modes[mode][0], modes[mode][1], " ", fb, bump, " |"
       )
     );
-    move(getmaxy(stdscr)-1, actual);
   }
 
   // TODO: we need a designated wake character to refocus the inputl

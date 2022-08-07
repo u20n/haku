@@ -4,14 +4,16 @@
 
 #include "inc/screen.hpp"
 #include "inc/agent.hpp"
+
 #include "inc/types/inputl.hpp"
 #include "inc/types/history.hpp"
 #include "inc/types/splash.hpp"
 
 std::vector<std::string> mysplash {
-  "       (*  >.<)",
-  "        .haku!",
-  " > press any key to start "
+  "        (*  >.<)",
+  "         .haku!",
+  "",
+  " > press any key to start <"
 };
 
 struct Client : public agent {
@@ -21,7 +23,7 @@ struct Client : public agent {
   }
 
   void send(std::string m) override {
-    h->add_new(m);
+    h->bump(m);
   }
   Client(history* h) : h(h) {}
 };
@@ -43,15 +45,20 @@ int main(void) {
   refresh();
   getch(); // "press any key to start"
   clear(); refresh();
-  while (!close) {
-    /** reset cursor */
-    move(getmaxy(stdscr)-1, mbar.actual);
 
+  mbar.show(); h.show(); // jump start (TODO; make more elegant)
+  while (!close) { 
     /** handle input */
-    mbar.show();
     int c = getch(); // slightly redundant, but we may need it later on
     mbar.bump(c);
-    h.bump();
+
+    /** show relevant info */
+    mbar.show();
+    h.show();
+      
+    /** reset cursor */
+    move(getmaxy(stdscr)-1, mbar.actual); // kinda hacky TODO    
+    
     refresh();
   }
 
