@@ -40,6 +40,7 @@ int main(void) {
   splash spl(mysplash, &ready);
   ready.notify_all();
   spl.show();
+  refresh();
   getch(); // "press any key to start"
   while (!close) {
     h.bump();

@@ -39,7 +39,6 @@ struct splash {
         printl(i, lmargin(x, img.at(i-y)));
       } 
     }
-    refresh(); // show splash
     // block until ready
     ready->wait(false);
     // clear(); // see :15
