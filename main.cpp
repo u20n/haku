@@ -42,6 +42,7 @@ int main(void) {
   spl.show();
   refresh();
   getch(); // "press any key to start"
+  clear();
   while (!close) {
     h.bump();
     /** reset cursor */

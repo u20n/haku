@@ -31,7 +31,8 @@ struct inputl {
   };
 
   int mode = 0;
-
+  
+  // TODO: we need a designated wake character to refocus the inputl
   void bump(int c) { // inputed character
     /** parse input character */
     switch(c) {

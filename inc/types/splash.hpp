@@ -41,7 +41,6 @@ struct splash {
     }
     // block until ready
     ready->wait(false);
-    // clear(); // see :15
   }
   
   splash(
