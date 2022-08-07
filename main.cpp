@@ -30,7 +30,7 @@ int main(void) {
   history h;
   inputl mbar(new Client{&h});
 
-  bool close = false; // close flag
+  std::atomic<bool> close = false; // close flag
    
   initscr();
   keypad(stdscr, TRUE); // enable function keys
@@ -51,7 +51,7 @@ int main(void) {
 
     /** handle input */
     mbar.show();
-    int c = getch();
+    int c = getch(); // slightly redundant, but we may need it later on
     mbar.bump(c);
   }
 
