@@ -9,12 +9,8 @@
 #include "inc/types/history.hpp"
 #include "inc/types/splash.hpp"
 
-std::vector<std::string> mysplash {
-  "        (*  >.<)",
-  "         .haku!",
-  "",
-  " > press any key to start <"
-};
+
+#include "assets/splash.hpp"
 
 struct Client : public agent {
   history* h;
