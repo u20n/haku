@@ -7,7 +7,7 @@
 
 #include "inc/types/inputl.hpp"
 #include "inc/types/history.hpp"
-#include "inc/types/splash.hpp"
+#include "inc/types/asplash.hpp"
 
 
 #include "assets/splash.hpp"
@@ -33,12 +33,16 @@ int main(void) {
   initscr();
   keypad(stdscr, TRUE); // enable function keys
 	noecho(); // don't echo while getch
-  
-  std::atomic<bool> ready{true}; 
-  splash spl(mysplash, &ready);
-  ready.notify_all();
-  spl.show();
-  refresh();
+   
+  asplash spl(mysplash);
+
+  std::jthread jt{&asplash::play, &spl};
+  jt.detach();
+  while (!spl.stop) {
+    refresh();
+    clear();
+  }
+
   getch(); // "press any key to start"
   clear(); refresh();
 
