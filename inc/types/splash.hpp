@@ -11,11 +11,6 @@
 
 struct splash {
   std::vector<std::string> img;
-  /** 
-   * while sound in principle, this is pretty annoying to use in practice; 
-   * TODO: come up with a better solution
-   * */
-  std::atomic<bool>* ready;  
 
   void show(int y=-1, int x=-1) { // defaults to center if y,x < 0
     unsigned int my, mx;
@@ -39,12 +34,9 @@ struct splash {
         printl(i, lmargin(x, img.at(i-y)));
       } 
     }
-    // block until ready
-    ready->wait(false);
   }
   
   splash(
-      std::vector<std::string> img,
-      std::atomic<bool>* ready
-    ) : img(img), ready(ready) {}
+      std::vector<std::string> img
+    ) : img(img) {}
 };

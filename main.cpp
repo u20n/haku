@@ -7,7 +7,7 @@
 
 #include "inc/types/inputl.hpp"
 #include "inc/types/history.hpp"
-#include "inc/types/asplash.hpp"
+#include "inc/types/lsplash.hpp"
 
 
 #include "assets/splash.hpp"
@@ -34,16 +34,16 @@ int main(void) {
   keypad(stdscr, TRUE); // enable function keys
 	noecho(); // don't echo while getch
    
-  asplash spl(mysplash);
+  lsplash spl(mysplash);
 
-  std::jthread jt{&asplash::play, &spl};
-  jt.detach();
-  while (!spl.stop) {
-    refresh();
-    clear();
-  }
-
+  std::jthread st(&lsplash::play, &spl);
+  st.detach(); 
+  
+  timeout(-1); // block on this getch
   getch(); // "press any key to start"
+  timeout(0); // remove block
+ 
+  spl.halt();
   clear(); refresh();
 
   mbar.show(); h.show(); // jump start (TODO; make more elegant)
