@@ -3,8 +3,9 @@
 #include <vector>
 
 std::vector<std::string> mysplash {
-  "         /\\-`\\",
-  "        / ' v')",
+  "     \\8   /\\-`\\",
+  "     /,' / ' v')",
+  "     `.z{.___n_'",
   "        (*  >.<)",
   "         .haku!",
   "",
