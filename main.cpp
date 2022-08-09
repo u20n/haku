@@ -39,23 +39,18 @@ int main(void) {
   
   timeout(-1); // block on this getch
   getch(); // "press any key to start"
-  timeout(0); // remove block on stdscr
+  spl.halt(); // stop the splash screen
+  timeout(0); // remove block on stdscr 
  
-  spl.halt(); // stop the splash screen 
-
-  mbar.show(); h.show(); // jump start (TODO; make more elegant)
-  move(getmaxy(stdscr)-1, mbar.actual); // ^
   while (!close) { 
+    /** show visually relevant info */
+    mbar.show();
+    h.show();
+    move(getmaxy(stdscr)-1, mbar.actual); // update cursor pos
+    
     /** handle input */
     int c = getch(); // slightly redundant, but we may need it later on
     mbar.bump(c);
-    
-    move(getmaxy(stdscr)-1, mbar.actual); // update cursor position
-    /** show relevant info */
-    mbar.show();
-    h.show();
-    
-    refresh();
   }
 
   /** clean up */

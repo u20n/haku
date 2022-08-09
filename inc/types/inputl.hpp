@@ -10,7 +10,7 @@
 char modes[3][2] = {
   {'~', '>'}, // insert
   {'>', '|'}, // edit
-  {'|', '<'} // change view
+  {'(', '<'} // change view
 };
 
 /** responsible for managing the input line */
@@ -34,7 +34,9 @@ struct inputl {
   int mode = 0;
   
   void show() { 
-    unsigned int mx = getmaxx(stdscr);
+    unsigned int mx, my;
+    getmaxyx(stdscr, my, mx);
+
     /** fill in bar */
     char bump = ' ';
     unsigned int toffset = loffset+roffset+(MARGIN*2); // total offset
@@ -71,7 +73,7 @@ struct inputl {
      
     /** print bar */ 
     printl(
-      getmaxy(stdscr)-1,
+      my-1,
       margin(
         MARGIN,
         "| ", modes[mode][0], modes[mode][1], " ", fb, bump, " |"
@@ -79,7 +81,6 @@ struct inputl {
     );
   }
 
-  // TODO: we need a designated wake character to refocus the inputl
   void bump(int c) { // inputed character
     /** parse input character */
     switch(c) {

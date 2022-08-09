@@ -16,7 +16,7 @@ struct lsplash {
   void play() { 
     unsigned int i=0;
     while(!this->stop) {
-      if (i<this->frames.size()) { 
+      if (i<this->frames.size()) { // this completes the frame loop, even if we're supposed to be closed
         clear();
         this->frames.at(i).show();
         refresh();
