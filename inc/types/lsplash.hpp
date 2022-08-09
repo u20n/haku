@@ -14,6 +14,7 @@ struct lsplash {
   unsigned int interval = 300;
 
   void play() { 
+    curs_set(0); // hide cursor
     unsigned int i=0;
     while(!this->stop) {
       if (i<this->frames.size()) { // this completes the frame loop, even if we're supposed to be closed
@@ -26,6 +27,7 @@ struct lsplash {
         i = 0;
       }
     }
+    curs_set(1); // show cursor
   }
 
   void halt() {
