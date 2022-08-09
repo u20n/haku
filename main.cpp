@@ -29,6 +29,7 @@ int main(void) {
   std::atomic<bool> close = false; // close flag
    
   initscr();
+  use_default_colors(); // respect terminal color config first
   keypad(stdscr, TRUE); // enable function keys
 	noecho(); // don't echo while getch
    

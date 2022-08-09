@@ -28,7 +28,7 @@ void printl(
 
 
 /** 
- * apply a margin programatically to a buffer
+ * apply a margin programatically equally to a buffer
  * */
 template<typename... T>
 std::string margin(unsigned int margin, T... t) { 
