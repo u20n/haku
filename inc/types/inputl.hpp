@@ -86,7 +86,7 @@ struct inputl {
     /** parse input character */
     switch(c) {
       case MODIFIER:
-        // do modifier stuff
+        // do modifier stuff 
         break;
       case MOVE_RIGHT:
         if (cindex == mbuff.size()) {return;}
