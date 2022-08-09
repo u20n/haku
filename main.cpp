@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "inc/screen.hpp"
-#include "inc/agent.hpp"
+#include "inc/overlay.hpp"
 
 #include "inc/types/inputl.hpp"
 #include "inc/types/history.hpp"
@@ -12,19 +12,16 @@
 
 #include "assets/splash.hpp"
 
-
-
 // still working this out
 struct overlay_controller {
-  std::queue<std::string> mqueue;
-
+  mqueue mq;
 };
 
 
 int main(void) {  
   overlay_controller oc;
   history h;
-  inputl mbar(&oc.mqueue);
+  inputl mbar(&oc.mq);
 
   std::atomic<bool> close = false; // close flag
    

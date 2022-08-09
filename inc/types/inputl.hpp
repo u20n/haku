@@ -16,7 +16,7 @@ char modes[3][2] = {
 
 /** responsible for managing the input line */
 struct inputl {
-  std::queue<std::string>* mqueue; // outgoing messages
+  mqueue* mq; // outgoing messages
   std::string mbuff;
   unsigned int loffset = 5; // left offset
   unsigned int roffset = 3; // right offset
@@ -116,7 +116,8 @@ struct inputl {
       case KEY_ENTER:
         if (mbuff.empty()) {return;}
         // push new block
-        mqueue->push(std::string{mbuff});
+        mq->queue.push_back(std::string{mbuff});
+        mq->notify();
         cindex = 0; mbuff.clear(); // reset 
         break;
       default:
@@ -131,5 +132,5 @@ struct inputl {
     }
   }
   
-  inputl(std::queue<std::string>* q) : mqueue(q) {}
+  inputl(mqueue* mq) : mq(mq) {}
 };
