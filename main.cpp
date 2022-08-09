@@ -12,21 +12,19 @@
 
 #include "assets/splash.hpp"
 
-struct Client : public agent {
-  history* h;
-  void parse(std::string m) override {
- 
-  }
 
-  void send(std::string m) override {
-    h->bump(m);
-  }
-  Client(history* h) : h(h) {}
+
+// still working this out
+struct overlay_controller {
+  std::queue<std::string> mqueue;
+
 };
 
-int main(void) {
+
+int main(void) {  
+  overlay_controller oc;
   history h;
-  inputl mbar(new Client{&h});
+  inputl mbar(&oc.mqueue);
 
   std::atomic<bool> close = false; // close flag
    
@@ -41,23 +39,21 @@ int main(void) {
   
   timeout(-1); // block on this getch
   getch(); // "press any key to start"
-  timeout(0); // remove block
+  timeout(0); // remove block on stdscr
  
-  spl.halt();
-  clear(); refresh();
+  spl.halt(); // stop the splash screen 
 
   mbar.show(); h.show(); // jump start (TODO; make more elegant)
+  move(getmaxy(stdscr)-1, mbar.actual); // ^
   while (!close) { 
     /** handle input */
     int c = getch(); // slightly redundant, but we may need it later on
     mbar.bump(c);
-
+    
+    move(getmaxy(stdscr)-1, mbar.actual); // update cursor position
     /** show relevant info */
     mbar.show();
     h.show();
-      
-    /** reset cursor */
-    move(getmaxy(stdscr)-1, mbar.actual); // kinda hacky TODO    
     
     refresh();
   }

@@ -4,6 +4,7 @@
 
 #include <string>
 #include <charconv>
+#include <queue>
 #include <ncurses.h>
 
 char modes[3][2] = {
@@ -14,7 +15,7 @@ char modes[3][2] = {
 
 /** responsible for managing the input line */
 struct inputl {
-  agent* uagent;
+  std::queue<std::string>* mqueue; // outgoing messages
   std::string mbuff;
   unsigned int loffset = 5; // left offset
   unsigned int roffset = 3; // right offset
@@ -106,7 +107,7 @@ struct inputl {
       case KEY_ENTER:
         if (mbuff.empty()) {return;}
         // push new block
-        uagent->send(std::string{mbuff});
+        mqueue->push(std::string{mbuff});
         cindex = 0; mbuff.clear(); // reset 
         break;
       default:
@@ -121,5 +122,5 @@ struct inputl {
     }
   }
   
-  inputl(agent* ua) : uagent(ua) {}
+  inputl(std::queue<std::string>* q) : mqueue(q) {}
 };

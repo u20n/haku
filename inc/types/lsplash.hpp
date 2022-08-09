@@ -15,21 +15,23 @@ struct lsplash {
 
   void play() { 
     unsigned int i=0;
-    while(!stop) {
-      if (i<this->frames.size()) {
+    while(!this->stop) {
+      if (i<this->frames.size()) { 
         clear();
         this->frames.at(i).show();
         refresh();
         std::this_thread::sleep_for(std::chrono::milliseconds(this->interval));
         i++;
+      } else {
+        i = 0;
       }
-      i = 0;
     }
+    clear();
   }
 
   void halt() {
     this->stop = true;
-    this->stop.notify_all(); // redundant
+    this->stop.notify_all(); // for observing entities
   }
 
   lsplash(std::vector<std::vector<std::string>> f) {
