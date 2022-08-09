@@ -36,12 +36,10 @@ int main(void) {
 
   std::jthread st(&lsplash::play, &spl);
   st.detach(); 
-  
-  timeout(-1); // block on this getch
+
   getch(); // "press any key to start"
   spl.halt(); // stop the splash screen
-  timeout(0); // remove block on stdscr 
- 
+   
   while (!close) { 
     /** show visually relevant info */
     mbar.show();

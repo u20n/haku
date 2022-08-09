@@ -26,12 +26,12 @@ struct lsplash {
         i = 0;
       }
     }
-    clear();
   }
 
   void halt() {
     this->stop = true;
     this->stop.notify_all(); // for observing entities
+    clear();
   }
 
   lsplash(std::vector<std::vector<std::string>> f) {
