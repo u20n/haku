@@ -1,6 +1,7 @@
 #pragma once
 #include "../screen.hpp"
 #include "../push.hpp"
+#include "../../config.h"
 
 #include <string>
 #include <charconv>
@@ -9,8 +10,8 @@
 
 char modes[3][2] = {
   {'~', '>'}, // insert
-  {'>', '|'}, // edit
-  {'(', '<'} // change view
+  {' ', '%'}, // browse (the history panel) 
+  {'(', '<'} // change overlay
 };
 
 /** responsible for managing the input line */
@@ -27,7 +28,7 @@ struct inputl {
   
   enum modekey {
     INSERT,
-    EDIT,
+    BROWSE,
     VIEW
   };
 
@@ -84,11 +85,14 @@ struct inputl {
   void bump(int c) { // inputed character
     /** parse input character */
     switch(c) {
-      case KEY_RIGHT:
+      case MODIFIER:
+        // do modifier stuff
+        break;
+      case MOVE_RIGHT:
         if (cindex == mbuff.size()) {return;}
         cindex++;
         break;
-      case KEY_LEFT:
+      case MOVE_LEFT:
         if (cindex-1 >= 0) {cindex--;}
         break;
       case KEY_BACKSPACE:
@@ -97,10 +101,14 @@ struct inputl {
         mbuff.erase(cindex, 1);
         break;
       case KEY_DC:
-        if (cindex == mbuff.size()-1) {
-          mbuff.erase(cindex, 1);
+        if (mbuff.size() == 0) {return;}
+        // unfortunately seems like no cleaner way to do this
+        if (cindex+1 > mbuff.size()) { // we're past the end
+          mbuff.pop_back();
           cindex--;
-        } else {
+        } else if (cindex+1 == mbuff.size()) { // we're at the end
+          mbuff.pop_back();
+        } else if (cindex+1 < mbuff.size()) { // we're inside
           mbuff.erase(cindex+1, 1);
         }
         break;
