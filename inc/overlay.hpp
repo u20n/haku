@@ -2,6 +2,8 @@
 #include <atomic>
 #include <deque>
 
+#include "types/history.hpp"
+
 struct mqueue {
   std::atomic<bool> newm{false};
   std::deque<std::string> queue;
@@ -12,11 +14,9 @@ struct mqueue {
   }
 };
 
-
-
-// pure virual extension for the overlay
+// pure virtual template for overlays
 struct overlay {
   mqueue* mq;
-
+  virtual void display(history* h) = 0;
   overlay(mqueue* mq) : mq(mq) {}
 };

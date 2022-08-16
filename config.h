@@ -6,7 +6,8 @@
  * */
 #define CHAT_FOREGROUND [0, 0, 0, 0]
 
-
+// == OVERLAY KEYS == //
+#define OVERLAY_CONTROL_TOGGLE KEY_HOME // toggle piping of command keys between overlay and haku
 
 // == COMMAND KEYS == //
 #define MODIFIER KEY_COMMAND
@@ -19,3 +20,18 @@
 #define MOVE_UP KEY_UP
 #define MOVE_DOWN KEY_DOWN
 
+
+// == MODE SIGNIFIERS == //
+char MODES[3][10] { 
+  {'-', '-', 'I', 'N', 'S', 'E', 'R', 'T', '-', '-'},
+  {'-', '-', ' ', 'V', 'I', 'E', 'W', ' ', '-', '-'},
+  {'-', '-', 'O', 'V', 'R', 'L', 'A', 'Y', '-', '-'}
+};
+
+// == MODE SIGNIFIERS (PERSONAL ARCHIVE) == //
+
+//#define modes[3][2] = {
+//  {'~', '>'}, // insert
+//  {' ', '%'}, // browse (the history panel) 
+//  {'(', '<'} // change overlay
+//};

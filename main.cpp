@@ -15,8 +15,7 @@
 // still working this out
 struct overlay_controller {
   mqueue mq;
-};
-
+}; 
 
 int main(void) {  
   overlay_controller oc;
@@ -38,7 +37,7 @@ int main(void) {
   getch(); // "press any key to start"
   spl.halt(); // stop the splash screen
    
-  while (!close) { 
+  while (!close) {
     /** show visually relevant info */
     mbar.show();
     h.show();

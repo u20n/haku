@@ -8,24 +8,16 @@
 #include <queue>
 #include <ncurses.h>
 
-char modes[3][2] = {
-  {'~', '>'}, // insert
-  {' ', '%'}, // browse (the history panel) 
-  {'(', '<'} // change overlay
-};
-
 /** responsible for managing the input line */
 struct inputl {
   mqueue* mq; // outgoing messages
-  std::string mbuff;
-  unsigned int loffset = 5; // left offset
-  unsigned int roffset = 3; // right offset
+  std::string mbuff;  
   unsigned int cindex = 0; // cursor index (on message)
   
-  unsigned int actual = 0; // actual cursor pos
-
   int MARGIN = 30;
   
+  unsigned int actual = MARGIN+sizeof(MODES[0])+cindex; // actual cursor x index (on screen)
+
   enum modekey {
     INSERT,
     BROWSE,
@@ -37,6 +29,11 @@ struct inputl {
   void show() { 
     unsigned int mx, my;
     getmaxyx(stdscr, my, mx);
+
+    /** determine how much space we're working with */
+    std::string mstr{MODES[mode], sizeof(MODES[mode])};
+    unsigned int loffset = mstr.size()+3; // border character, two spaces
+    unsigned int roffset = 3; // bump, space, border character
 
     /** fill in bar */
     char bump = ' ';
@@ -77,7 +74,7 @@ struct inputl {
       my-1,
       margin(
         MARGIN,
-        "| ", modes[mode][0], modes[mode][1], " ", fb, bump, " |"
+        "| ", mstr, " ", fb, bump, " |"
       )
     );
   }

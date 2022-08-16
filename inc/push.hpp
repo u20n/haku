@@ -37,4 +37,15 @@ namespace bfs {
       // log
     }
   }
+  /** read the file */
+  std::string read(std::string fpath) {
+    std::string fbuff, l;
+    std::ifstream fs(fpath);
+    while (getline(fs, l)) {
+      fbuff.append(l+'\n');
+      l.clear();
+    }
+    fs.close();
+    return fbuff;
+  }
 };
