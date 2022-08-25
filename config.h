@@ -22,16 +22,13 @@
 
 
 // == MODE SIGNIFIERS == //
-char MODES[3][10] { 
-  {'-', '-', 'I', 'N', 'S', 'E', 'R', 'T', '-', '-'},
-  {'-', '-', ' ', 'V', 'I', 'E', 'W', ' ', '-', '-'},
-  {'-', '-', 'O', 'V', 'R', 'L', 'A', 'Y', '-', '-'}
-};
-
-// == MODE SIGNIFIERS (PERSONAL ARCHIVE) == //
-
-//#define modes[3][2] = {
-//  {'~', '>'}, // insert
-//  {' ', '%'}, // browse (the history panel) 
-//  {'(', '<'} // change overlay
+//char MODES[3][10] { 
+//  {'-', '-', 'I', 'N', 'S', 'E', 'R', 'T', '-', '-'},
+//  {'-', '-', ' ', 'V', 'I', 'E', 'W', ' ', '-', '-'},
+//  {'-', '-', 'O', 'V', 'R', 'L', 'A', 'Y', '-', '-'}
 //};
+char MODES[3][2] {
+  {'~', '>'}, // insert
+  {' ', '%'}, // browse (the history panel) 
+  {'(', '<'} // change overlay
+};

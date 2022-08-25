@@ -5,7 +5,6 @@
 
 #include <string>
 #include <charconv>
-#include <queue>
 #include <ncurses.h>
 
 /** responsible for managing the input line */
@@ -32,8 +31,8 @@ struct inputl {
 
     /** determine how much space we're working with */
     std::string mstr{MODES[mode], sizeof(MODES[mode])};
-    unsigned int loffset = mstr.size()+3; // border character, two spaces
-    unsigned int roffset = 3; // bump, space, border character
+    unsigned int loffset = mstr.size()+1; // one space
+    unsigned int roffset = 2; // bump, space
 
     /** fill in bar */
     char bump = ' ';
@@ -74,7 +73,7 @@ struct inputl {
       my-1,
       margin(
         MARGIN,
-        "| ", mstr, " ", fb, bump, " |"
+        mstr, " ", fb, bump, " "
       )
     );
   }
