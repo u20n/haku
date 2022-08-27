@@ -2,7 +2,7 @@
 #include <atomic>
 #include <deque>
 
-#include "types/history.hpp"
+#include "../widgets/history.hpp"
 
 struct mqueue {
   std::atomic<bool> newm{false};

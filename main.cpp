@@ -4,10 +4,11 @@
 
 #include "inc/screen.hpp"
 #include "inc/overlay.hpp"
+#include "inc/inputd.hpp"
 
-#include "inc/types/inputl.hpp"
-#include "inc/types/history.hpp"
-#include "inc/types/lsplash.hpp"
+#include "widgets/inputl.hpp"
+#include "widgets/history.hpp"
+#include "widgets/lsplash.hpp"
 
 
 #include "assets/splash.hpp"
@@ -19,8 +20,14 @@ struct overlay_controller {
 
 int main(void) {  
   overlay_controller oc;
+  
   history h;
-  inputl mbar(&oc.mq);
+  inputl mb(&oc.mq);
+  inputd idaemon{
+    &mb,  
+    &h  
+  };
+
 
   std::atomic<bool> close = false; // close flag
    
@@ -39,13 +46,13 @@ int main(void) {
    
   while (!close) {
     /** show visually relevant info */
-    mbar.show();
+    mb.show();
     h.show();
-    move(getmaxy(stdscr)-1, mbar.actual); // update cursor pos
+    move(getmaxy(stdscr)-1, mb.actual); // update cursor pos
     
     /** handle input */
-    int c = getch(); // slightly redundant, but we may need it later on
-    mbar.bump(c);
+    //idaemon.cycle(getch());
+    mb.bump(getch());
   }
 
   /** clean up */

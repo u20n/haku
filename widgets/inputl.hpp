@@ -1,14 +1,15 @@
 #pragma once
-#include "../screen.hpp"
-#include "../push.hpp"
-#include "../../config.h"
+#include "../inc/screen.hpp"
+#include "../inc/push.hpp"
+#include "../inc/widget.hpp"
+#include "../config.h"
 
 #include <string>
 #include <charconv>
 #include <ncurses.h>
 
 /** responsible for managing the input line */
-struct inputl {
+struct inputl : public widget {
   mqueue* mq; // outgoing messages
   std::string mbuff;  
   unsigned int cindex = 0; // cursor index (on message)
@@ -62,10 +63,7 @@ struct inputl {
     }
     
     /** update cursor info */
-    actual = cindex;
-    if (cindex >= aspace-1) {
-      actual = aspace-1;
-    }
+    actual = (cindex >= aspace-1) ? aspace : cindex;
     actual += loffset+MARGIN; // add offset
      
     /** print bar */ 
@@ -78,7 +76,7 @@ struct inputl {
     );
   }
 
-  void bump(int c) { // inputed character
+  void bump(int c) override { // inputed character
     /** parse input character */
     switch(c) {
       case MODIFIER:

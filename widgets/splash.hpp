@@ -6,8 +6,7 @@
 #include <atomic>
 #include <cmath>
 
-#include "../base.hpp"
-#include "../screen.hpp"
+#include "../inc/screen.hpp"
 
 struct splash {
   std::vector<std::string> img;

@@ -4,9 +4,11 @@
 #include <string>
 #include <ncurses.h>
 
-#include "../screen.hpp"
+#include "../inc/screen.hpp"
+#include "../inc/widget.hpp"
 
-struct history {
+
+struct history : public widget {
   unsigned int MARGIN = 30;
   unsigned int YMOD = 0; // y modifier, e.g. scroll distance 
 
@@ -101,5 +103,19 @@ struct history {
         margin(MARGIN, layers.at(i))
       ); 
     }
+  }
+
+  void bump(int char_code) override {
+    switch(char_code) {
+      case KEY_UP:
+        if (this->YMOD+1 == layers.size()) return;
+        this->YMOD++;
+        break;
+      case KEY_DOWN:
+        if (this->YMOD == 0) return;
+        this->YMOD--;
+        break;
+    }
+    // scroll, etc (?)
   }
 };
