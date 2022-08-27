@@ -27,7 +27,7 @@ int main(void) {
     &mb,  
     &h  
   };
-
+  idaemon.set_focused(&mb);
 
   std::atomic<bool> close = false; // close flag
    
@@ -51,8 +51,7 @@ int main(void) {
     move(getmaxy(stdscr)-1, mb.actual); // update cursor pos
     
     /** handle input */
-    //idaemon.cycle(getch());
-    mb.bump(getch());
+    idaemon.cycle(getch()); 
   }
 
   /** clean up */

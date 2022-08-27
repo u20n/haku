@@ -12,7 +12,7 @@ using emap = std::map<
 struct inputd {
   emap escape_map {};
   
-  emap::iterator focused;
+  emap::iterator focused, root;
 
   bool escaped = false;
 
@@ -47,6 +47,17 @@ struct inputd {
     this->escape_map[w] = kc;
   }
   
+  void set_focused(widget* w) {
+    this->focused = this->escape_map.find(w);
+    // TODO, QoL add auto add if not found
+  }
+  
+  // EARLY, root widget to control, well, which widget is focused
+  // this root widget CANNOT have any escape characters
+  void set_root(widget* w) {
+    this->root = this->escape_map.find(w);
+  }
+
   inputd(emap&& temp_map) {
     escape_map = temp_map;
   }
@@ -55,6 +66,5 @@ struct inputd {
     for (const auto& w: W) {
       this->escape_map.insert({w, {}});
     }
-    this->focused = this->escape_map.begin();
   }
 };
