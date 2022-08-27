@@ -10,10 +10,11 @@ using emap = std::map<
   std::unordered_set<int> // key codes
 >;
 struct inputd {
+protected:
   emap escape_map {};
   
-  emap::iterator focused, root; 
-  
+  emap::iterator focused, root;  
+public:
   void cycle(int char_code) {
     if (char_code == KEY_RESIZE) {
       // this needs to be broadcast
