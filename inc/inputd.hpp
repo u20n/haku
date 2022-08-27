@@ -12,10 +12,8 @@ using emap = std::map<
 struct inputd {
   emap escape_map {};
   
-  emap::iterator focused, root;
-
-  bool escaped = false;
-
+  emap::iterator focused, root; 
+  
   void cycle(int char_code) {
     if (char_code == KEY_RESIZE) {
       // this needs to be broadcast
@@ -24,19 +22,10 @@ struct inputd {
       }
     }
 
-    if (this->escaped) {
-      // choose widget? (this seems like the job of another widget)
-      return;
-    }
-
     for (const auto k: this->focused->second) {
       if (k == char_code) {
-        // escape, return
-        this->escaped = true;
-        // input daemon needs some way of signalling
-        // that it's escaped
-        // both to the other widgets
-        // and to the user
+        // escape to root widget
+        this->focused = this->root;
         return;
       }
     }
