@@ -20,6 +20,9 @@
 #define MOVE_UP KEY_UP
 #define MOVE_DOWN KEY_DOWN
 
+// == ESCAPE KEYS == //
+int ESCAPE_INPUTL[3] = {':', 'q', 10};
+
 
 // == MODE SIGNIFIERS == //
 //char MODES[3][10] { 
@@ -27,8 +30,10 @@
 //  {'-', '-', ' ', 'V', 'I', 'E', 'W', ' ', '-', '-'},
 //  {'-', '-', 'O', 'V', 'R', 'L', 'A', 'Y', '-', '-'}
 //};
-char MODES[3][2] {
-  {'~', '>'}, // insert
-  {' ', '%'}, // browse (the history panel) 
-  {'(', '<'} // change overlay
+char MODES[4][3] {
+  {'~', '|', '>'}, // insert
+  // browse
+  {'^', '<', ']'}, // up
+  {'v', '<', ']'}, // down
+  {'(', ':', '<'} // change overlay
 };

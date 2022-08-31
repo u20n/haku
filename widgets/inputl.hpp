@@ -20,7 +20,8 @@ struct inputl : public widget {
 
   enum modekey {
     INSERT,
-    BROWSE,
+    BROWSEL,
+    BROWSER,
     VIEW
   };
 
@@ -108,12 +109,15 @@ struct inputl : public widget {
         break;
       case 10: // to catch keyboard enter
       case KEY_ENTER:
-        if (mbuff.empty()) {return;}
+        {
+        auto mqbuff = mbuff;
+        mbuff.clear(); cindex = 0; // reset
+        if (mbuff.empty() || mbuff.at(0) == ':') {return;}
         // push new block
-        mq->queue.push_back(std::string{mbuff});
+        mq->queue.push_back(mqbuff);
         mq->notify();
-        cindex = 0; mbuff.clear(); // reset 
         break;
+        }
       default:
         if (cindex >= mbuff.size()) {
           mbuff.resize(cindex+1);
