@@ -1,13 +1,14 @@
 #pragma once
 #include <cassert>
 #include <sstream>
+#include <ncurses.h>
 
+/** (will) increase .o size, but that's the price you pay */
 
-/**
- * generate an inputline for display
- * */
+namespace scr {
 template<typename... T>
-void printl(
+inline void 
+printl(
   int yl, // what y to print @
   T... t // assorted types to print
 ) {
@@ -22,16 +23,9 @@ void printl(
   refresh();
 }
 
-/** 
- * print, with color!
- */
-
-
-/** 
- * apply a margin programatically equally to a buffer
- * */
 template<typename... T>
-std::string margin(unsigned int margin, T... t) { 
+inline std::string 
+margin(unsigned int margin, T... t) { 
   unsigned int mx = getmaxx(stdscr);
   std::stringstream s;
   
@@ -55,7 +49,8 @@ std::string margin(unsigned int margin, T... t) {
  * left margin, fill right
  * */
 template<typename... T>
-std::string lmargin(unsigned int margin, T... t) {
+inline std::string
+lmargin(unsigned int margin, T... t) {
   unsigned int mx = getmaxx(stdscr);
   std::stringstream s;
   for (unsigned int i=0; i<margin; i++) {
@@ -73,11 +68,13 @@ std::string lmargin(unsigned int margin, T... t) {
 /**
  * print a blank line
  * */
-std::string newl() {
+inline std::string 
+newl() {
   unsigned int mx = getmaxx(stdscr);
   std::string r;
   for (unsigned int i=0; i<mx; i++) {
     r.append(" ");
   };
   return r;
+}
 }
